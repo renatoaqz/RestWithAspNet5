@@ -2,10 +2,12 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using RestWithASPNET5.Model.Context;
 using RestWithASPNET5.Services;
 using RestWithASPNET5.Services.Implementations;
 using System;
@@ -28,6 +30,8 @@ namespace RestWithASPNET5
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            var connection = Configuration["MySQLConnection:MySQLConnectionString"];
+            services.AddDbContext<MySqlContext>(options => options.UseMySql(connection));
 
             //depende injection
             services.AddScoped<IPersonService, PersonServiceImplementation>();
