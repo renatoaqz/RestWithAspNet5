@@ -1,41 +1,39 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using RestWithASPNET5.Business;
 using RestWithASPNET5.Model;
-using RestWithASPNET5.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using RestWithASPNET5.Repository;
 
 namespace RestWithASPNET5.Controllers
 {
+    [ApiVersion("1")]
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/[controller]/v{version:apiVersion}")]
     public class PersonController : ControllerBase
     {
 
         private readonly ILogger<PersonController> _logger;
-        private IPersonService _personService;
+        private IPersonBusiness _personBusiness;
 
-        public PersonController(ILogger<PersonController> logger, IPersonService personService)
+        public PersonController(ILogger<PersonController> logger, IPersonBusiness personBusiness)
         {
             _logger = logger;
-            _personService = personService;
+            _personBusiness = personBusiness;
         }
 
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(_personService.FindAll());
+            return Ok(_personBusiness.FindAll());
         }
 
         [HttpGet("{id}")]
         public IActionResult Get(long Id)
         {
-            var person = _personService.FindByID(Id);
+            var person = _personBusiness.FindByID(Id);
 
             if (person != null)
-                return Ok(_personService.FindByID(Id));
+                return Ok(_personBusiness.FindByID(Id));
             else
                 return NotFound();
         }
@@ -43,7 +41,7 @@ namespace RestWithASPNET5.Controllers
         public IActionResult Post([FromBody] Person person)
         {
             if (person != null)
-                return Ok(_personService.Create(person));
+                return Ok(_personBusiness.Create(person));
             else
                 return BadRequest();
         }
@@ -52,7 +50,7 @@ namespace RestWithASPNET5.Controllers
         public ActionResult Put([FromBody] Person person)
         {
             if (person != null)
-                return Ok(_personService.Update(person));
+                return Ok(_personBusiness.Update(person));
             else
                 return BadRequest(); 
         }
@@ -60,23 +58,16 @@ namespace RestWithASPNET5.Controllers
         [HttpDelete("{Id}")]
         public ActionResult Delete(long Id)
         {
-            var person = _personService.FindByID(Id);
+            var person = _personBusiness.FindByID(Id);
             if (person != null)
             {
-                _personService.Delete(Id);
+                _personBusiness.Delete(Id);
                 return NoContent();
             }
             else
             {
                 return NotFound();
             }
-        }
-
-        private bool IsNumeric(string strnumber)
-        {
-            double number;
-
-            return double.TryParse(strnumber, out number);
         }
     }
 }
