@@ -9,9 +9,9 @@ namespace RestWithASPNET5.Business.Implementations
 {
     public class BooksBusinnesImplementation : IBooksBusinnes
     {
-        private readonly IBooksRepository _repository;
+        private readonly IRepository<Books> _repository;
 
-        public BooksBusinnesImplementation(IBooksRepository repository)
+        public BooksBusinnesImplementation(IRepository<Books> repository)
         {
             _repository = repository;
         }

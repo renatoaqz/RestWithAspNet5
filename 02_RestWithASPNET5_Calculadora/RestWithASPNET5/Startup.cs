@@ -8,7 +8,7 @@ using RestWithASPNET5.Business;
 using RestWithASPNET5.Business.Implementations;
 using RestWithASPNET5.Model.Context;
 using RestWithASPNET5.Repository;
-using RestWithASPNET5.Repository.Implementations;
+using RestWithASPNET5.Repository.Generic;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -50,8 +50,7 @@ namespace RestWithASPNET5
             services.AddScoped<IPersonBusiness, PersonBusinessImplementation>();
             services.AddScoped<IBooksBusinnes, BooksBusinnesImplementation>();
 
-            services.AddScoped<IPersonRespository, PersonRepositoryImplementation>();
-            services.AddScoped<IBooksRepository, BooksRepositoryImplementation>();
+            services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
 
         }
 

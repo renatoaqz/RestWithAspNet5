@@ -29,7 +29,7 @@ namespace RestWithASPNET5.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult Get(long Id)
+        public IActionResult Get(int Id)
         {
             var book = _booksBusinnes.FindByID(Id);
 
@@ -57,7 +57,7 @@ namespace RestWithASPNET5.Controllers
         }
 
         [HttpDelete("{Id}")]
-        public ActionResult Delete(long Id)
+        public ActionResult Delete(int Id)
         {
             var book = _booksBusinnes.FindByID(Id);
             if (book != null)
